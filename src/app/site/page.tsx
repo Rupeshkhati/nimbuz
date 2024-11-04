@@ -8,10 +8,10 @@ import Link from "next/link";
 export default function Home() {
   return( <main className="">
         <section className="h-full w-full pt-36 relative flex items-center justify-center flex-col">
-        <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#161616_1px,transparent_1px),linear-gradient(to_bottom,#161616_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)] " />
+        <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]"></div>
         <p className="text-center">Run your agency, in one place</p>
-        <div className="bg-gradient-to-r from-primary to-secondary-foreground text-transparent bg-clip-text relative">
-          <h1 className="text-9xl font-bold text-center md:text-[300px]">Nimbuz</h1>
+        <div className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-transparent bg-clip-text relative">
+             <h1 className="text-9xl font-bold text-center md:text-[300px]">Nimbuz</h1>
         </div>
         <div className="flex justify-center items-center relative md:mt-[-70px]">
           <Image
@@ -33,6 +33,7 @@ export default function Home() {
           </p>
           <div className="flex justify-center gap-4 flex-wrap mt-6">
             {pricingCards.map((card) => (
+              //WIP: Wire up free product from esewa
               <Card key={card.title}
               className={clsx('w-[300px] flex flex-col justify-between', {
                 'border-2 border-primary': card.title === 'Unlimited Saas',
