@@ -1,5 +1,5 @@
 'use client'
-import { AgencySidebarOption, SubAccount, SubAccountSidebarOption } from '@prisma/client'
+import { Agency, AgencySidebarOption, SubAccount, SubAccountSidebarOption } from '@prisma/client'
 import React, { useEffect, useMemo, useState } from 'react'
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from '../ui/sheet'
 import { Button } from '../ui/button'
@@ -10,6 +10,12 @@ import Image from 'next/image'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../ui/command'
 import Link from 'next/link'
+import { useModal } from '@/providers/modal-provider'
+import CustomModal from '../ui/global/custom-modal'
+import SubAccountDetails from '../ui/forms/subaccount-details'
+import { Separator } from '../ui/separator'
+import { icons } from '@/lib/constants'
+import { Value } from '@radix-ui/react-select'
 
 type Props = {
     defaultOpen?:boolean
@@ -23,6 +29,7 @@ type Props = {
 }
 
 const MenuOptions = ({details,id,sidebarLogo,sidebarOpt,subAccounts,user,defaultOpen}: Props) => {
+  const { setOpen } = useModal()
   const [isMounted,setIsMounted] = useState(false)
 
   const openState = useMemo(
@@ -38,8 +45,7 @@ const MenuOptions = ({details,id,sidebarLogo,sidebarOpt,subAccounts,user,default
   return (
     <Sheet 
       modal={false}
-      open={true}
-      //{...openState}
+      {...openState}
     >
       <SheetTrigger asChild className='absolute left-4 top-4 z-[100] md:!hidden flex'>
         <Button variant="outline" size={'icon'}>
@@ -186,14 +192,61 @@ const MenuOptions = ({details,id,sidebarLogo,sidebarOpt,subAccounts,user,default
                   </CommandList>
                   {(user?.role === 'AGENCY_OWNER' ||
                   user?.role === 'AGENCY_ADMIN') && (
-                    <Button className="w-full flex gap-2">
+                    <SheetClose>
+                    <Button
+                     className="w-full flex gap-2"
+                     onClick={() => {
+                       setOpen(
+                       <CustomModal title='Create A Subaccount' 
+                       subheading='You can switch your agency account and sub account from the sidebar'>
+                        <SubAccountDetails
+                         agencyDetails={user?.Agency as Agency} 
+                         userId={user?.id as string}
+                         userName={user?.name}
+                         />
+                       </CustomModal>)
+                     }}
+                    >
                       <PlusCircleIcon size={15} />
                       Create Sub Account
                     </Button>
+                    </SheetClose>
                   )}
                   </Command>
               </PopoverContent>
           </Popover>
+          <p className='text-muted-foreground text-xs mb-2'>MENU LINKS</p>
+          <Separator className='mb-4' />
+          <nav className='relative'>
+            <Command className='rounded-lg overflow-visible bg-transparent'>
+              <CommandInput placeholder='Search...'/>
+              <CommandList className='py-4 overflow-visible'>
+                <CommandEmpty>No Results Found</CommandEmpty>
+                <CommandGroup className='overflow-visible'>
+                  {sidebarOpt.map((sidebarOptions) => {
+                    let val;
+                     const result = icons.find(
+                      (icon) => icon.value === sidebarOptions.icon ) 
+                      if (result) {
+                        val = <result.path />
+                      }
+                    return (
+                      <CommandItem 
+                      key={sidebarOptions.id} 
+                      className='md:w-[320px] w-full'>
+                      <Link 
+                      href={sidebarOptions.link}
+                      className='flex items-center gap-2 hover:bg-transparent rounded-md transition-all md:w-full w-[320px]'>
+                        {val}
+                        <span>{sidebarOptions.name}</span>
+                      </Link>
+                    </CommandItem>
+                    ) 
+                  })}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </nav>
         </div>
       </SheetContent>
     </Sheet>

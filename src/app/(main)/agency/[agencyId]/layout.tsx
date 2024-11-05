@@ -1,4 +1,6 @@
 import Sidebar from '@/components/sidebar'
+import BlurPage from '@/components/ui/global/blur-page'
+import InfoBar from '@/components/ui/global/infobar'
 import Unauthorized from '@/components/unauthorized'
 import { getNotificationAndUser, verifyAndAcceptInvitation } from '@/lib/queires'
 import { currentUser } from '@clerk/nextjs'
@@ -35,7 +37,13 @@ const layout = async ({ children, params}: Props) => {
      id={params.agencyId} 
      type = "agency"
      />
-    <div className='md:pl-[300px]'>{children}</div>
+    <div className='md:pl-[300px]'>
+      <InfoBar notifications={allNoti} />
+      <div className='relative'>
+        <BlurPage>{children}</BlurPage>
+        </div>
+      
+    </div>
   </div>
 }
 
