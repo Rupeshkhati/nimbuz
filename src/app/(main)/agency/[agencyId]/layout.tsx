@@ -32,19 +32,20 @@ const layout = async ({ children, params}: Props) => {
   const notifications = await getNotificationAndUser(agencyId)
   if(notifications) allNoti = notifications;
 
-  return <div className='h-screen overflow-hidden'>
-    <Sidebar
-     id={params.agencyId} 
-     type = "agency"
-     />
-    <div className='md:pl-[300px]'>
-      <InfoBar notifications={allNoti} />
-      <div className='relative'>
-        <BlurPage>{children}</BlurPage>
-        </div>
-      
-    </div>
+  return (
+   <div className='h-screen overflow-hidden'>
+  <Sidebar
+   id = { params.agencyId } 
+   type = "agency"
+   />
+  <div className='md:pl-[300px]'>
+    <InfoBar notifications={allNoti} />
+    <div className='relative'>
+      <BlurPage>{children}</BlurPage>
+      </div>
+    
   </div>
+</div>)
 }
 
 export default layout
