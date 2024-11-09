@@ -57,6 +57,7 @@
     "next-themes": "^0.2.1",
     "prisma": "^5.7.1",
     "react": "^18",
+    "react-beautiful": "^2.4.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-day-picker": "^8.10.0",
     "react-dom": "^18",
